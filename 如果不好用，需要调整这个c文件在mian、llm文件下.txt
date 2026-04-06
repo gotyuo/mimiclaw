@@ -46,7 +46,7 @@ static bool provider_is_openai(void)
 
 static const char *llm_api_url(void)
 {
-    if (strcmp(s_provider, "siliconflow") == 0) return MIMIC_SILICONFLOW_API_URL;     #这里增加了新的模型提供商信息。
+    if (strcmp(s_provider, "siliconflow") == 0) return MIMIC_SILICONFLOW_API_URL;     #这里增加了新的模型提供商信息 SILICONFLOW  这里大小写是否有区别目前不知道，用大写的吧。
     if (strcmp(s_provider, "openai") == 0) return MIMI_OPENAI_API_URL;
     return MIMI_LLM_API_URL;
 }
