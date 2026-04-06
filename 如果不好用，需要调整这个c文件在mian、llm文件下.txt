@@ -1,3 +1,67 @@
 如果模型调用报错，需要去调整这个c文件 
-大概是182 的文字 
-有几个地方要调整 把硅基流动的调整为你使用的
+位置大概是182行的位置
+有几个地方要调整 把硅基流动的调整为你使用的  需要调整设置，否则运行时会返回报错。
+
+
+ /* ── Provider helpers ──────────────────────────────────────────── */
+
+static bool provider_is_openai(void)
+{
+    return strcmp(s_provider, "openai") == 0 || strcmp(s_provider, "siliconflow") == 0;
+}
+
+static const char *llm_api_url(void)
+{
+    if (strcmp(s_provider, "siliconflow") == 0) return MIMIC_SILICONFLOW_API_URL;
+    if (strcmp(s_provider, "openai") == 0) return MIMI_OPENAI_API_URL;
+    return MIMI_LLM_API_URL;
+}
+
+static const char *llm_api_host(void)
+{
+    if (strcmp(s_provider, "siliconflow") == 0) return "api.siliconflow.cn";
+    if (strcmp(s_provider, "openai") == 0) return "api.openai.com";
+    return "api.anthropic.com";
+}
+
+static const char *llm_api_path(void)
+{
+    if (provider_is_openai()) return "/v1/chat/completions";
+    return "/v1/messages";
+}
+
+/* ── Init ─────────────────────────────────────────────────────── */
+
+
+大概是这样调整 ，，
+其他的大模型估计也是类似的挑中  注意 的地方
+
+
+ /* ── Provider helpers ──────────────────────────────────────────── */
+
+static bool provider_is_openai(void)
+{
+    return strcmp(s_provider, "openai") == 0 || strcmp(s_provider, "siliconflow") == 0;   #这里增加了新的模型提供商。
+}
+
+static const char *llm_api_url(void)
+{
+    if (strcmp(s_provider, "siliconflow") == 0) return MIMIC_SILICONFLOW_API_URL;     #这里增加了新的模型提供商信息。
+    if (strcmp(s_provider, "openai") == 0) return MIMI_OPENAI_API_URL;
+    return MIMI_LLM_API_URL;
+}
+
+static const char *llm_api_host(void)
+{
+    if (strcmp(s_provider, "siliconflow") == 0) return "api.siliconflow.cn";  #这里增加了新的模型提供商的访问地址。
+    if (strcmp(s_provider, "openai") == 0) return "api.openai.com";
+    return "api.anthropic.com";
+}
+
+static const char *llm_api_path(void)
+{
+    if (provider_is_openai()) return "/v1/chat/completions";    #个别供应商的地址不是v1 而是v4 v5 注意区分
+    return "/v1/messages";
+}
+
+/* ── Init ─────────────────────────────────────────────────────── */
